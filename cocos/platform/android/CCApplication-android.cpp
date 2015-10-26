@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 #include "CCApplication.h"
 #include "base/CCDirector.h"
+#include "base/CCEventDispatcher.h"
 #include <android/log.h>
 #include <jni.h>
 #include <cstring>
@@ -210,7 +211,7 @@ void Application::applicationScreenSizeChanged(int newWidth, int newHeight) {
 	 * Added by CFMatt
 	 */
 	auto director = cocos2d::Director::getInstance();
-    auto glview = director->getOpenGLView();
+	auto glview = director->getOpenGLView();
 	
 	CCLOG("New Size: %d,%d", newWidth, newHeight);
 	if(glview){
