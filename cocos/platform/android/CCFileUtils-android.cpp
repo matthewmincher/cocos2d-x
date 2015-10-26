@@ -29,6 +29,7 @@ THE SOFTWARE.
 #include "CCFileUtils-android.h"
 #include "platform/CCCommon.h"
 #include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
+#include "jni/JniHelper.h"
 #include "android/asset_manager.h"
 #include "android/asset_manager_jni.h"
 #include "jni/CocosPlayClient.h"
@@ -85,7 +86,15 @@ bool FileUtilsAndroid::init()
     }
     else
     {
-        _defaultResRootPath = "assets/";
+        JniMethodInfo m;
+		if(JniHelper::getStaticMethodInfo(m, "uk/co/codefanatics/stc/util/CocosHelper", "getAssetPath", "()Ljava/lang/String;")){
+			jstring str = (jstring) m.env->CallStaticObjectMethod(m.classID, m.methodID);
+			m.env->DeleteLocalRef(m.classID);
+			_defaultResRootPath = JniHelper::jstring2string(str);
+			m.env->DeleteLocalRef(str);
+		} else {
+			_defaultResRootPath = "assets/";
+		}
     }
 
     return FileUtils::init();
