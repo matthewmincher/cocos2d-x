@@ -206,7 +206,25 @@ bool Application::openURL(const std::string &url)
 }
 
 void Application::applicationScreenSizeChanged(int newWidth, int newHeight) {
-
+	/**
+	 * Added by CFMatt
+	 */
+	auto director = cocos2d::Director::getInstance();
+    auto glview = director->getOpenGLView();
+	
+	CCLOG("New Size: %d,%d", newWidth, newHeight);
+	if(glview){
+		glview->setFrameSize(newWidth, newHeight);
+		glview->setDesignResolutionSize(newWidth, newHeight, ResolutionPolicy::SHOW_ALL);
+		
+		char* buf = new char[10];
+		sprintf(buf, "%d,%d", newWidth, newHeight);		
+		director->getEventDispatcher()->dispatchCustomEvent("stc_resize", buf);		
+		CC_SAFE_DELETE_ARRAY(buf);
+	}
+	/**
+	 * End added by CFMatt
+	 */
 }
 
 NS_CC_END
